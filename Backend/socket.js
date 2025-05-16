@@ -6,7 +6,8 @@ import Chat from "./models/Chat.js";
 import dotenv from "dotenv";
 import { set } from "mongoose";
 import { json } from "express";
-
+// import { createClient } from "redis";
+// import { createAdapter } from "@socket.io/redis-adapter";
 dotenv.config();
 
 export const initializeSocket = (server) => { 
@@ -21,6 +22,22 @@ export const initializeSocket = (server) => {
       
     });
 
+    // // Create Redis clients for pub/sub
+    // const pubClient = createClient({
+    //     url: process.env.REDIS_URL, // Your Redis connection URL (e.g. redis://user:pass@host:port)
+    // });
+    // const subClient = pubClient.duplicate();
+
+    // // Handle Redis errors
+    // pubClient.on("error", (err) => console.error("Redis Pub Client Error", err));
+    // subClient.on("error", (err) => console.error("Redis Sub Client Error", err));
+
+    // // Connect Redis clients
+    // await pubClient.connect();
+    // await subClient.connect();
+
+    // // Use Redis adapter for socket.io
+    // io.adapter(createAdapter(pubClient, subClient));
     io.on("connection", (socket) => {
         const token = socket.handshake.auth.user.token;
         if (!token) {
